@@ -17,88 +17,88 @@ class MYViewController: UIViewController,UICollectionViewDelegate,UICollectionVi
         super.viewDidLoad()
             let firstimg : UIImageView = UIImageView()
             firstimg.image = UIImage.init(named: "添加照片")
-            self.arr.addObject(firstimg.image!)
+            self.arr.add(firstimg.image!)
     }
    
-    internal func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.arr.count
     }
-    internal func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-          let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photo", forIndexPath: indexPath)as! PhotoCollectionViewCell
+    internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photo", for: indexPath)as! PhotoCollectionViewCell
         if (indexPath.item==0)
         {
-       let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photo", forIndexPath: indexPath)as! PhotoCollectionViewCell
+       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photo", for: indexPath)as! PhotoCollectionViewCell
             cell.setcell(self.arr[indexPath.item] as! UIImage)
             return cell
          }
        if(indexPath.item>0)
       {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photo", forIndexPath: indexPath)as! PhotoCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photo", for: indexPath)as! PhotoCollectionViewCell
         cell.setcell(self.arr[indexPath.item] as! UIImage)
         return cell
        }
         //不知道为什么不能return nil
         return cell
     }
-    internal func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    internal func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(indexPath.item==0)
         {
-            let AlertController : UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-            let Action1 : UIAlertAction = UIAlertAction(title: "相机", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
-                if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera))
+            let AlertController : UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+            let Action1 : UIAlertAction = UIAlertAction(title: "相机", style: UIAlertActionStyle.default, handler: { (UIAlertAction) -> Void in
+                if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
                 {
                     let Picker : UIImagePickerController = UIImagePickerController()
                    Picker.allowsEditing = true
                    Picker.delegate = self
                     self.navigationController?.delegate = self
                     //指定源为相机
-                    Picker.sourceType = UIImagePickerControllerSourceType.Camera
-                    self .presentViewController(Picker, animated: true, completion: nil)
+                    Picker.sourceType = UIImagePickerControllerSourceType.camera
+                    self .present(Picker, animated: true, completion: nil)
                 }
                 
                 
             })
-            let Action2 : UIAlertAction = UIAlertAction(title: "相册", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
-                if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary))
+            let Action2 : UIAlertAction = UIAlertAction(title: "相册", style: UIAlertActionStyle.default, handler: { (UIAlertAction) -> Void in
+                if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary))
                 {
                     let Picker2 : UIImagePickerController = UIImagePickerController()
                     Picker2.allowsEditing = true
                     Picker2.delegate = self
                     self.navigationController?.delegate = self
                     //指定源为相册
-                    Picker2.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-                    self .presentViewController(Picker2, animated: true, completion: nil)
+                    Picker2.sourceType = UIImagePickerControllerSourceType.photoLibrary
+                    self .present(Picker2, animated: true, completion: nil)
                 }
                 
             })
             
-            let Action3 : UIAlertAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
+            let Action3 : UIAlertAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.cancel, handler: nil)
             AlertController .addAction(Action1)
             AlertController .addAction(Action2)
             AlertController .addAction(Action3)
-            self .presentViewController(AlertController, animated: true, completion: nil)
+            self .present(AlertController, animated: true, completion: nil)
         }
         //不知道为什么!=0会报红
         if(indexPath.item>0)
         {
-            let AlertController : UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-            let Action1 : UIAlertAction = UIAlertAction(title: "删除", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
-               self.arr .removeObject(self.arr[indexPath.item])
+            let AlertController : UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+            let Action1 : UIAlertAction = UIAlertAction(title: "删除", style: UIAlertActionStyle.default, handler: { (UIAlertAction) -> Void in
+               self.arr .remove(self.arr[indexPath.item])
                 self.collection.reloadData()
             })
-            let Action2 : UIAlertAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
+            let Action2 : UIAlertAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.cancel, handler: nil)
             AlertController .addAction(Action1)
             AlertController .addAction(Action2)
-            self .presentViewController(AlertController, animated: true, completion: nil)
+            self .present(AlertController, animated: true, completion: nil)
         }
         
     }
-    internal func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         //申明的时候初始化过了
        self.photo.image = info[UIImagePickerControllerEditedImage]as? UIImage
-        self.arr.addObject(self.photo.image!)
+        self.arr.add(self.photo.image!)
         self.collection.reloadData()
-        picker .dismissViewControllerAnimated(true, completion: nil)
+        picker .dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

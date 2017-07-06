@@ -11,7 +11,7 @@ import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell{
     @IBOutlet weak var img: UIImageView!
-    func setcell(image:UIImage){
+    func setcell(_ image:UIImage){
         img.image = image
     }
 }
